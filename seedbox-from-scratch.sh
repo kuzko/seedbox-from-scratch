@@ -160,7 +160,7 @@ function getString
     echo "#"
     echo "# The Seedbox From Scratch Script"
     echo "#   By Notos ---> https://github.com/Notos/"
-    echo "#"
+    echo "#  modified by kuzko for debian7"
     echo "#"
     echo "#"
     echo
@@ -237,7 +237,7 @@ clear
 # 1.
 
 #localhost is ok this rtorrent/rutorrent installation
-IPADDRESS1=`ifconfig | sed -n 's/.*inet addr:\([0-9.]\+\)\s.*/\1/p' | grep -v 127 | head -n 1`
+IPADDRESS1=`/sbin/ifconfig eth0 | sed '/inet\ /!d;s/.*r://g;s/\ .*//g'`
 CHROOTJAIL1=NO
 
 #those passwords will be changed in the next steps
@@ -253,11 +253,11 @@ getString NO  "OpenVPN port: " OPENVPNPORT1 31195
 #getString NO  "Do you want to have some of your users in a chroot jail? " CHROOTJAIL1 YES
 getString NO  "Install Webmin? " INSTALLWEBMIN1 YES
 getString NO  "Install Fail2ban? " INSTALLFAIL2BAN1 YES
-getString NO  "Install OpenVPN? " INSTALLOPENVPN1 YES
-getString NO  "Install SABnzbd? " INSTALLSABNZBD1 YES
+getString NO  "Install OpenVPN? " INSTALLOPENVPN1 NO
+getString NO  "Install SABnzbd? " INSTALLSABNZBD1 NO
 getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 YES
-getString NO  "Install Deluge? " INSTALLDELUGE1 YES
-getString NO  "Wich RTorrent version would you like to install, '0.9.2' or '0.9.3'? " RTORRENT1 0.9.2
+getString NO  "Install Deluge? " INSTALLDELUGE1 NO
+getString NO  "Wich RTorrent version would you like to install, '0.9.2' or '0.9.3'? " RTORRENT1 0.9.3
 
 if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.2" ]; then
   echo "$RTORRENT1 typed is not 0.9.3 or 0.9.2!"
@@ -470,8 +470,8 @@ perl -pi -e "s/connect_from_port_20\=YES/#connect_from_port_20\=YES/g" /etc/vsft
 echo "listen_port=$NEWFTPPORT1" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "ssl_enable=YES" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "allow_anon_ssl=YES" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "force_local_data_ssl=YES" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "force_local_logins_ssl=YES" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "force_local_data_ssl=NO" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "force_local_logins_ssl=NO" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "ssl_tlsv1=YES" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "ssl_sslv2=NO" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "ssl_sslv3=NO" | tee -a /etc/vsftpd.conf >> /dev/null
@@ -528,7 +528,7 @@ svn checkout http://rutorrent.googlecode.com/svn/trunk/plugins
 rm -r -f rutorrent/plugins
 mv plugins rutorrent/
 
-cp /etc/seedbox-from-scratch/action.php.template /var/www/rutorrent/plugins/diskspace/action.php
+#cp /etc/seedbox-from-scratch/action.php.template /var/www/rutorrent/plugins/diskspace/action.php
 
 groupadd admin
 
@@ -546,7 +546,7 @@ cd MediaInfo/Project/GNU/CLI
 make install
 
 cd /var/www/rutorrent/plugins
-svn co https://autodl-irssi.svn.sourceforge.net/svnroot/autodl-irssi/trunk/rutorrent/autodl-irssi
+svn co https://svn.code.sf.net/p/autodl-irssi/code/trunk/rutorrent/autodl-irssi
 cd autodl-irssi
 
 # 30.
@@ -598,7 +598,7 @@ echo "<?php \$streampath = 'http://$IPADDRESS1/stream/view.php'; ?>" | tee /var/
 cd /var/www/rutorrent/plugins/
 svn co http://svn.rutorrent.org/svn/filemanager/trunk/fileupload
 chmod 775 /var/www/rutorrent/plugins/fileupload/scripts/upload
-wget -O /tmp/plowshare.deb http://plowshare.googlecode.com/files/plowshare_1~git20120930-1_all.deb
+wget -O /tmp/plowshare.deb https://plowshare.googlecode.com/files/plowshare3_1~git20140112.c250e07-1_all.deb
 dpkg -i /tmp/plowshare.deb
 apt-get --yes -f install
 
