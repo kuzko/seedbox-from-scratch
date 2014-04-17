@@ -483,6 +483,7 @@ echo "write_enable=YES" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "local_umask=022" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "chroot_local_user=YES" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "chroot_list_file=/etc/vsftpd.chroot_list" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "passwd_chroot_enable=yes" | tee -a /etc/vsftpd.conf >> /dev/null #added to enable vsftpd to work without filezilla complaining
 
 # 13.
 mv /etc/apache2/sites-available/default /etc/apache2/sites-available/default.ORI
