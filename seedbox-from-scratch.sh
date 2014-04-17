@@ -363,7 +363,7 @@ apt-get --yes install php5-xcache
 #Check if its Debian an do a sysvinit by upstart replacement:
 
 if [ "$OS1" = "Debian" ]; then
-  echo 'Yes, do as I say!' | apt-get -y --force-yes install upstart
+  echo 'Oui, faites ce que je vous dis !' | apt-get -y --force-yes install upstart
 fi
 
 # 8.3 Generate our lists of ports and RPC and create variables
