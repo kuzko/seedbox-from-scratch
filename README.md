@@ -55,10 +55,10 @@ DO NOT upgrade anything in your box, ask in the thread before even thinking abou
 DO NOT try to reconfigure packages using other tutorials.
 
 ## How to install
-Just copy and paste those commands on your terminal:
+Just copy and paste those commands on your terminal (!! YOU NEED TO BE ROOT !!):
 
 ```
-wget -N https://raw.github.com/kuzko/seedbox-from-scratch/v2.1.9/seedbox-from-scratch.sh
+wget -N https://raw.github.com/kuzko/seedbox-from-scratch/v2.1.9/seedbox-from-scratch.sh --no-check-certificate
 time bash ~/seedbox-from-scratch.sh
 ```
 
