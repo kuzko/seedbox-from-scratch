@@ -4,7 +4,7 @@
 
 This is a script I've being working for some time now. I decided to share it here because it has some good things to add:
 
-* A multi-user enviroment, you'll have scripts to add and delete users.
+* A multi-user environment, you'll have scripts to add and delete users.
 * Linux Quota, to control how much space every user can use in your box.
 
 ## Installed software
@@ -58,7 +58,7 @@ DO NOT try to reconfigure packages using other tutorials.
 Just copy and paste those commands on your terminal:
 
 ```
-wget -N https://raw.github.com/Notos/seedbox-from-scratch/v2.1.9/seedbox-from-scratch.sh
+wget -N https://raw.github.com/kuzko/seedbox-from-scratch/v2.1.9/seedbox-from-scratch.sh
 time bash ~/seedbox-from-scratch.sh
 ```
 
@@ -94,13 +94,8 @@ To use your VPN you will need a VPN client compatible with [OpenVPN](http://open
 http://<Server IP or Server Name>/rutorrent/vpn.zip` and use it in any OpenVPN client.
 ```
 
-## Supported and tested servers
-* Ubuntu Server 12.10.0 - 64bit (on VM environment)
-* Ubuntu Server 12.04.x - 64bit (on VM environment)
-* Ubuntu Server 12.04.x - 32bit (OVH's Kimsufi 2G and 16G - Precise)
-* Ubuntu Server 12.04.x - 64bit (OVH's Kimsufi 2G and 16G - Precise)
-* Debian 6.0.6 - 32 and 64bit (OVH's Kimsufi 2G - Squeeze)
-* Debian 6.0.6 - 32 and 64bit (on VM environment)
+## Supported and tested servers (kuzko's fork)
+DEBIAN 7 x64 .... other distros are NOT tested and might not work
 
 ## Quota
 Quota is disabled by default in your box. To enable and use it, you'll have to open Webmin, using the address you can find in one of the tables box above this. After you sucessfully logged on Webmin, enable it by clicking

@@ -598,6 +598,7 @@ echo "<?php \$streampath = 'http://$IPADDRESS1/stream/view.php'; ?>" | tee /var/
 cd /var/www/rutorrent/plugins/
 svn co http://svn.rutorrent.org/svn/filemanager/trunk/fileupload
 chmod 775 /var/www/rutorrent/plugins/fileupload/scripts/upload
+apt-get install spidermonkey-bin
 wget -O /tmp/plowshare.deb https://plowshare.googlecode.com/files/plowshare3_1~git20140112.c250e07-1_all.deb
 dpkg -i /tmp/plowshare.deb
 apt-get --yes -f install
