@@ -459,7 +459,7 @@ mkdir -p /etc/ssl/private/
 openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -config /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf
 
 if [ "$OS1" = "Debian" ]; then
-  apt-get --yes install vsftpd
+  apt-get --yes --force-yes install vsftpd
 else
   apt-get --yes install libcap-dev libpam0g-dev libwrap0-dev
   dpkg -i /etc/seedbox-from-scratch/vsftpd_2.3.2-3ubuntu5.1_`uname -m`.deb
