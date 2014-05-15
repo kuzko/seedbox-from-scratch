@@ -4,7 +4,7 @@
 #
 # The Seedbox From Scratch Script
 #   By Notos ---> https://github.com/Notos/
-#
+#	Modified By kuzko --->https://gitub.com/kuzko/
 #
 ######################################################################
 #
@@ -363,7 +363,7 @@ apt-get --yes install php5-xcache
 #Check if its Debian an do a sysvinit by upstart replacement:
 
 if [ "$OS1" = "Debian" ]; then
-  echo 'Oui, faites ce que je vous dis !' | apt-get -y --force-yes install upstart
+  echo 'Oui, faites ce que je vous dis !' | apt-get -y --force-yes install upstart
 fi
 
 # 8.3 Generate our lists of ports and RPC and create variables
