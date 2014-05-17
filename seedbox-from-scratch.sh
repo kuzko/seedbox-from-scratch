@@ -1,6 +1,4 @@
 #!/bin/bash
-set -x
-trap read debug
 #
 #
 # The Seedbox From Scratch Script
