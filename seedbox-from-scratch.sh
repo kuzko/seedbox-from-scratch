@@ -306,8 +306,8 @@ service ssh restart
 perl -pi -e "s/deb cdrom/#deb cdrom/g" /etc/apt/sources.list
 
 #add non-free sources to Debian Squeeze# those two spaces below are on purpose
-perl -pi -e "s/squeeze main/squeeze  main contrib non-free/g" /etc/apt/sources.list
-perl -pi -e "s/squeeze-updates main/squeeze-updates  main contrib non-free/g" /etc/apt/sources.list
+perl -pi -e "s/wheezy main/wheezy  main contrib non-free/g" /etc/apt/sources.list
+perl -pi -e "s/wheezy-updates main/wheezy-updates  main contrib non-free/g" /etc/apt/sources.list
 
 # 7.
 # update and upgrade packages
@@ -333,19 +333,18 @@ if [ $? -gt 0 ]; then
   set -e
   exit 1
 fi
-# apt-get --yes install zip
-apt-get --yes install p7zip p7zip-rar
+apt-get --yes install zip
 apt-get --yes install python-software-properties
 
-# apt-get --yes install rar
-# if [ $? -gt 0 ]; then
-#  apt-get --yes install rar-free
-# fi
+apt-get --yes install rar
+if [ $? -gt 0 ]; then
+ apt-get --yes install rar-free
+fi
 
-# apt-get --yes install unrar
-# if [ $? -gt 0 ]; then
-#  apt-get --yes install unrar-free
-# fi
+apt-get --yes install unrar
+if [ $? -gt 0 ]; then
+  apt-get --yes install unrar-free
+fi
 
 apt-get --yes install dnsutils
 
