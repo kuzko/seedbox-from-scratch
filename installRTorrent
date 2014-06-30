@@ -42,6 +42,10 @@ if [ "$RTORRENT1" = "0.9.3" ]; then
   LIBTORRENT1=0.13.3
 fi
 
+if [ "$RTORRENT1" = "0.9.4" ]; then
+  LIBTORRENT1=0.13.4
+fi
+
 if [ ! -d /etc/seedbox-from-scratch/source/rtorrent-$RTORRENT1/ ]; then
   sudo tar xvfz /etc/seedbox-from-scratch/rtorrent-$RTORRENT1.tar.gz -C /etc/seedbox-from-scratch/source/
   sudo tar xvfz /etc/seedbox-from-scratch/libtorrent-$LIBTORRENT1.tar.gz -C /etc/seedbox-from-scratch/source/

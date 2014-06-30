@@ -257,10 +257,10 @@ getString NO  "Install OpenVPN? " INSTALLOPENVPN1 NO
 getString NO  "Install SABnzbd? " INSTALLSABNZBD1 NO
 getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 YES
 getString NO  "Install Deluge? " INSTALLDELUGE1 NO
-getString NO  "Wich RTorrent version would you like to install, '0.9.2' or '0.9.3'? " RTORRENT1 0.9.3
+getString NO  "Wich RTorrent version would you like to install, '0.9.2' , '0.9.3' or '0.9.4' " RTORRENT1 0.9.4
 
-if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.2" ]; then
-  echo "$RTORRENT1 typed is not 0.9.3 or 0.9.2!"
+if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.2" ] && [ "$RTORRENT1" != "0.9.3" ]; then
+  echo "$RTORRENT1 typed is not 0.9.3, 0.9.4 or 0.9.2!"
   exit 1
 fi
 
@@ -273,6 +273,7 @@ mkdir -p cd /etc/seedbox-from-scratch/source
 mkdir -p cd /etc/seedbox-from-scratch/users
 
 if [ ! -f /etc/seedbox-from-scratch/seedbox-from-scratch.sh ]; then
+  clear
   clear
   echo Looks like somethig is wrong, this script was not able to download its whole git repository.
   set -e
@@ -505,14 +506,9 @@ a2ensite default-ssl
 #apt-get --yes install libxmlrpc-core-c3-dev
 
 # 15.
-tar xvfz /etc/seedbox-from-scratch/xmlrpc-c-1.16.42.tgz -C /etc/seedbox-from-scratch/source/
-cd /etc/seedbox-from-scratch/source/
-unzip ../xmlrpc-c-1.31.06.zip
-
+svn checkout http://svn.code.sf.net/p/xmlrpc-c/code/stable
 # 16.
-#cd xmlrpc-c-1.16.42 ### old, but stable, version, needs a missing old types.h file
-#ln -s /usr/include/curl/curl.h /usr/include/curl/types.h
-cd xmlrpc-c-1.31.06
+cd stable
 ./configure --prefix=/usr --enable-libxml2-backend --disable-libwww-client --disable-wininet-client --disable-abyss-server --disable-cgi-server
 make
 make install
