@@ -257,10 +257,10 @@ getString NO  "Install OpenVPN? " INSTALLOPENVPN1 NO
 getString NO  "Install SABnzbd? " INSTALLSABNZBD1 NO
 getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 YES
 getString NO  "Install Deluge? " INSTALLDELUGE1 NO
-getString NO  "Wich RTorrent version would you like to install, '0.9.2' , '0.9.3' or '0.9.4' " RTORRENT1 0.9.4
+getString NO  "Wich RTorrent version would you like to install, '0.9.3' or '0.9.4' " RTORRENT1 0.9.4
 
-if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.2" ] && [ "$RTORRENT1" != "0.9.4" ]; then
-  echo "$RTORRENT1 typed is not 0.9.3, 0.9.4 or 0.9.2!"
+if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.4" ]; then
+  echo "$RTORRENT1 typed is not 0.9.3 or 0.9.4 !"
   exit 1
 fi
 
