@@ -259,7 +259,7 @@ getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 YES
 getString NO  "Install Deluge? " INSTALLDELUGE1 NO
 getString NO  "Wich RTorrent version would you like to install, '0.9.2' , '0.9.3' or '0.9.4' " RTORRENT1 0.9.4
 
-if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.2" ] && [ "$RTORRENT1" != "0.9.3" ]; then
+if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.2" ] && [ "$RTORRENT1" != "0.9.4" ]; then
   echo "$RTORRENT1 typed is not 0.9.3, 0.9.4 or 0.9.2!"
   exit 1
 fi
@@ -535,8 +535,8 @@ cp /etc/seedbox-from-scratch/favicon.ico /var/www/
 
 # 26.
 cd /tmp
-wget http://downloads.sourceforge.net/mediainfo/MediaInfo_CLI_0.7.56_GNU_FromSource.tar.bz2
-tar jxvf MediaInfo_CLI_0.7.56_GNU_FromSource.tar.bz2
+wget http://downloads.sourceforge.net/mediainfo/MediaInfo_CLI_0.7.69_GNU_FromSource.tar.bz2
+tar jxvf MediaInfo_CLI_0.7.69_GNU_FromSource.tar.bz2
 cd MediaInfo_CLI_GNU_FromSource/
 sh CLI_Compile.sh
 cd MediaInfo/Project/GNU/CLI
