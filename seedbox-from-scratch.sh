@@ -525,6 +525,11 @@ svn checkout http://rutorrent.googlecode.com/svn/trunk/plugins
 rm -r -f rutorrent/plugins
 mv plugins rutorrent/
 
+#setting up mktorrent as default torrent creator
+rm /var/www/rutorrent/plugins/create/conf.php
+cp /etc/seedboxfrom/etc/seedbox-from-scratch/conf-create.php /var/www/rutorrent/plugins/create/conf.php
+
+
 #cp /etc/seedbox-from-scratch/action.php.template /var/www/rutorrent/plugins/diskspace/action.php
 
 groupadd admin
