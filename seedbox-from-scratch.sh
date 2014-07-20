@@ -562,7 +562,8 @@ cd MediaInfo/Project/GNU/CLI
 make install
 
 cd /var/www/rutorrent/plugins
-svn co https://svn.code.sf.net/p/autodl-irssi/code/trunk/rutorrent/autodl-irssi
+git co https://github.com/autodl-community/autodl-rutorrent.git
+mv autodl-rutorrent autodl-irssi
 cd autodl-irssi
 
 # 30.
