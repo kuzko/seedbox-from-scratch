@@ -255,6 +255,7 @@ getString NO  "Install Webmin? " INSTALLWEBMIN1 YES
 getString NO  "Install Fail2ban? " INSTALLFAIL2BAN1 YES
 getString NO  "Install OpenVPN? " INSTALLOPENVPN1 NO
 getString NO  "Install SABnzbd? " INSTALLSABNZBD1 NO
+getString NO  "Install Bittorent Sync ? " INSTALLBTSYNC YES
 getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 YES
 getString NO  "Install Deluge? " INSTALLDELUGE1 NO
 getString NO  "Wich RTorrent version would you like to install, '0.9.3' or '0.9.4' " RTORRENT1 0.9.4
@@ -262,6 +263,19 @@ getString NO  "Wich RTorrent version would you like to install, '0.9.3' or '0.9.
 if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.4" ]; then
   echo "$RTORRENT1 typed is not 0.9.3 or 0.9.4 !"
   exit 1
+fi
+
+if [ "$INSTALLBTSYNC" = "YES" ]; then
+	apt-key adv --keyserver keys.gnupg.net --recv-keys 6BF18B15
+	CODENAME=$(lsb_release -cs | sed -n '/lucid\|precise\|quantal\|raring\|saucy\|trusty\|squeeze\|wheezy\|jessie\|sid/p')
+	echo "" >> /etc/apt/sources.list
+	echo "#### BitTorrent Sync - see: http://forum.bittorrent.com/topic/18974-debian-and-ubuntu-server-packages-for-bittorrent-sync-121-1/" >> /etc/apt/sources.list
+	echo "## Run this command: apt-key adv --keyserver keys.gnupg.net --recv-keys 6BF18B15" >> /etc/apt/sources.list
+	echo "deb http://debian.yeasoft.net/btsync ${CODENAME:-sid} main" >> /etc/apt/sources.list
+	echo "deb-src http://debian.yeasoft.net/btsync ${CODENAME:-sid} main" >> /etc/apt/sources.list
+	unset CODENAME
+	apt-get update
+	apt-get -y install btsync
 fi
 
 apt-get --yes update
@@ -527,7 +541,7 @@ mv plugins rutorrent/
 
 #setting up mktorrent as default torrent creator
 rm /var/www/rutorrent/plugins/create/conf.php
-cp /etc/seedboxfrom/etc/seedbox-from-scratch/conf-create.php /var/www/rutorrent/plugins/create/conf.php
+cp /etc/seedbox-from-scratch/conf-create.php /var/www/rutorrent/plugins/create/conf.php
 
 
 #cp /etc/seedbox-from-scratch/action.php.template /var/www/rutorrent/plugins/diskspace/action.php
@@ -707,5 +721,4 @@ echo ""
 # 99.
 
 reboot
-
 ##################### LAST LINE ###########
