@@ -561,8 +561,14 @@ sh CLI_Compile.sh
 cd MediaInfo/Project/GNU/CLI
 make install
 
+cd /var/www/rutorrent/js/
+git clone https://github.com/gabceb/jquery-browser-plugin.git
+mv jquery-browser-plugin/dist/jquery.browser.js .
+rm -r -f jquery-browser-plugin
+sed '30i\ <script type="text/javascript" src="./js/jquery.browser.js"></script> ' /var/www/rutorrent/index.html
+
 cd /var/www/rutorrent/plugins
-git co https://github.com/autodl-community/autodl-rutorrent.git
+git clone https://github.com/autodl-community/autodl-rutorrent.git
 mv autodl-rutorrent autodl-irssi
 cd autodl-irssi
 
