@@ -586,7 +586,11 @@ bash /etc/seedbox-from-scratch/updatejkinit
 #znc --makeconf
 #/home/antoniocarlos/.znc/configs/znc.conf
 
-# 32.
+# 32. Adding community trackers
+cd ~/.irssi/scripts/AutodlIrssi/trackers/
+git clone https://github.com/autodl-community/autodl-trackers.git
+mv ./autodl-trackers/* .
+rm -rf autodl-trackers
 
 # Installing poweroff button on ruTorrent
 
