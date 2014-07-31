@@ -3,7 +3,7 @@
 #
 # The Seedbox From Scratch Script
 #   By Notos ---> https://github.com/Notos/
-#	Modified By kuzko --->https://gitub.com/kuzko/
+#	Modified By imakiro --->https://gitub.com/imakiro/
 #
 ######################################################################
 #
@@ -160,7 +160,7 @@ function getString
     echo "#"
     echo "# The Seedbox From Scratch Script"
     echo "#   By Notos ---> https://github.com/Notos/"
-    echo "#  modified by kuzko for debian7"
+    echo "#  modified by imakiro for debian7"
     echo "#"
     echo "#"
     echo
@@ -282,7 +282,7 @@ apt-get --yes update
 apt-get --yes install whois sudo makepasswd git
 
 rm -f -r /etc/seedbox-from-scratch
-git clone -b v$SBFSCURRENTVERSION1 https://github.com/kuzko/seedbox-from-scratch.git /etc/seedbox-from-scratch
+git clone -b v$SBFSCURRENTVERSION1 https://github.com/imakiro/seedbox-from-scratch.git /etc/seedbox-from-scratch
 mkdir -p cd /etc/seedbox-from-scratch/source
 mkdir -p cd /etc/seedbox-from-scratch/users
 
