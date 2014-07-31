@@ -9,7 +9,7 @@ This is a script I've being working for some time now. I decided to share it her
 
 ## Installed software
 * ruTorrent 3.4 + official plugins
-* rTorrent 0.9.2 or 0.9.3 (you can choose, downgrade and upgrade at any time)
+* rTorrent 0.9.3 or 0.9.4 (you can choose, downgrade and upgrade at any time)
 * Deluge 1.3.5 or 0.9.3 (you can choose, downgrade and upgrade at any time)
 * libTorrrent 0.13.2 or 0.12.9
 * mktorrent
@@ -24,6 +24,7 @@ This is a script I've being working for some time now. I decided to share it her
 * Webmin (use it to manage your users quota)
 * sabnzbd: http://sabnzbd.org/
 * Rapidleech (http://www.rapidleech.com)
+* Bittorent SYnc (Follow the instructions)
 
 ## Main ruTorrent plugins
 autotoolscpuload, diskspace, erasedata, extratio, extsearch, feeds, filedrop, filemanager, geoip, history, logoff, mediainfo, mediastream, rss, scheduler, screenshots, theme, trafic and unpack
@@ -36,21 +37,24 @@ autotoolscpuload, diskspace, erasedata, extratio, extsearch, feeds, filedrop, fi
 * Fileshare Plugin (http://forums.rutorrent.org/index.php?topic=705.0)
 * MediaStream (to watch your videos right from your seedbox)
 * Logoff
-* Theme: Oblivion
+* Theme: Oblivion (_not forced anymore_)
 
 ## Before installation
-You need to have a "blank" server installation, if you have a Kimsufi, just do a "reinstall" on it, using debian 7 x64.
+You need to have a "blank" server installation, if you have a Kimsufi, just do a "reinstall" on it, using debian 7 x64, the script is also tested on ramnode VPS's and online.net / oneprovider dedicated servers. 
 After that access your box using a SSH client, like PuTTY.
 
 ## Warnings
 
 ####If you don't know Linux ENOUGH:
 
-DO NOT install this script on a non OVH Host. It is doable, but you'll have to know Linux to solve some problems.
-
 DO NOT use capital letters, all your usernames should be written in lowercase.
 
-DO NOT upgrade anything in your box, ask in the thread before even thinking about it.
+From NOTOS original script : 
+> DO NOT upgrade anything in your box, ask in the thread before even thinking about it.
+
+Well, you normaly should be able to update your packages with a basic 
+sudo apt-get update && sudo apt-get upgrade
+but if something goes wrong then search for the issue, open an issue here on github or if you have the solution, then request a pull ^^
 
 DO NOT try to reconfigure packages using other tutorials.
 
@@ -59,13 +63,21 @@ Just copy and paste those commands on your terminal (!! YOU NEED TO BE ROOT !!):
 
 ```
 wget -N https://raw.github.com/imakiro/seedbox-from-scratch/v2.1.9/seedbox-from-scratch.sh --no-check-certificate
-time bash ~/seedbox-from-scratch.sh
+time bash ./seedbox-from-scratch.sh
 ```
+if you decided to install bittorent Sync, do not forget to use :
+```
+sudo dpkg-reconfigure btsync
+```
+to setup bittorent sync as you wish.
 
 ####You must be logged as root to run this installation or use sudo on it.
 
 ## Commands
 After installing you will have access to the following commands to be used directly in terminal
+* restartSeedbox
+
+The following commands are in /etc/seedbox-from-scratch/ you can invoke them from there:
 * createSeedboxUser
 * deleteSeedboxUser
 * changeUserPassword
@@ -78,8 +90,6 @@ After installing you will have access to the following commands to be used direc
 * removeWebmin
 * upgradeRTorrent
 * installRTorrent
-* restartSeedbox
-
 * While executing them, if sudo is needed, they will ask for a password.
 
 ## Services
@@ -118,7 +128,7 @@ There is no real support for this script, but people is talking a lot about it [
 
 ## License
 
-Copyright (c) 2013 Notos (https://github.com/Notos/) 
+Copyright (c) 2013 Notos (https://github.com/Notos/) & imakiro (https://github.com/imakiro/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: 
 
