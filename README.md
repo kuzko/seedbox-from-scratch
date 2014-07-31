@@ -39,7 +39,7 @@ autotoolscpuload, diskspace, erasedata, extratio, extsearch, feeds, filedrop, fi
 * Theme: Oblivion
 
 ## Before installation
-You need to have a "blank" server installation, if you have a Kimsufi, just do a "reinstall" on it, using Ubuntu Server 12.04.
+You need to have a "blank" server installation, if you have a Kimsufi, just do a "reinstall" on it, using debian 7 x64.
 After that access your box using a SSH client, like PuTTY.
 
 ## Warnings
@@ -58,7 +58,7 @@ DO NOT try to reconfigure packages using other tutorials.
 Just copy and paste those commands on your terminal (!! YOU NEED TO BE ROOT !!):
 
 ```
-wget -N https://raw.github.com/kuzko/seedbox-from-scratch/v2.1.9/seedbox-from-scratch.sh --no-check-certificate
+wget -N https://raw.github.com/imakiro/seedbox-from-scratch/v2.1.9/seedbox-from-scratch.sh --no-check-certificate
 time bash ~/seedbox-from-scratch.sh
 ```
 
@@ -94,7 +94,7 @@ To use your VPN you will need a VPN client compatible with [OpenVPN](http://open
 http://<Server IP or Server Name>/rutorrent/vpn.zip` and use it in any OpenVPN client.
 ```
 
-## Supported and tested servers (kuzko's fork)
+## Supported and tested servers (imakiro's fork)
 DEBIAN 7 x64 .... other distros are NOT tested and might not work
 
 ## Quota
