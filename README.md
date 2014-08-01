@@ -11,7 +11,7 @@ This is a script I've being working for some time now. I decided to share it her
 * ruTorrent 3.4 + official plugins
 * rTorrent 0.9.3 or 0.9.4 (you can choose, downgrade and upgrade at any time)
 * Deluge 1.3.5 or 0.9.3 (you can choose, downgrade and upgrade at any time)
-* libTorrrent 0.13.2 or 0.12.9
+* libTorrrent 0.13.4 or 0.13.4
 * mktorrent
 * Fail2ban - to avoid apache and ssh exploits. Fail2ban bans IPs that show malicious signs -- too many password failures, seeking for exploits, etc.
 * Apache (SSL)
