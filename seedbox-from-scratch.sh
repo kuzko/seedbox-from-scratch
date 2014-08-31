@@ -24,7 +24,7 @@
 #
 #
 aptitude install -y lsb-release
-  SBFSCURRENTVERSION1='testing'
+  SBFSCURRENTVERSION1='v2.2.0'
   OS1=$(lsb_release -si)
 #
 # Changelog
@@ -287,7 +287,7 @@ if [ "$INSTALLBTSYNC" = "YES" ]; then
 fi
 
 apt-get --yes update
-apt-get --yes install whois sudo makepasswd git
+apt-get --yes install whois sudo makepasswd git iptables portsentry
 
 rm -f -r /etc/seedbox-from-scratch
 git clone -b $SBFSCURRENTVERSION1 https://github.com/imakiro/seedbox-from-scratch.git /etc/seedbox-from-scratch
@@ -319,7 +319,6 @@ echo "UseDNS no" | tee -a /etc/ssh/sshd_config > /dev/null
 echo "AllowGroups sshdusers" >> /etc/ssh/sshd_config
 mkdir -p /usr/share/terminfo/l/
 cp /lib/terminfo/l/linux /usr/share/terminfo/l/
-
 service ssh restart
 
 # 6.
@@ -329,6 +328,7 @@ perl -pi -e "s/deb cdrom/#deb cdrom/g" /etc/apt/sources.list
 #add non-free sources to Debian Squeeze# those two spaces below are on purpose
 perl -pi -e "s/wheezy main/wheezy  main contrib non-free/g" /etc/apt/sources.list
 perl -pi -e "s/wheezy-updates main/wheezy-updates  main contrib non-free/g" /etc/apt/sources.list
+
 
 # 7.
 # update and upgrade packages
@@ -340,7 +340,7 @@ apt-get --yes upgrade
 #install all needed packages
 
 apt-get --yes build-dep znc
-apt-get --yes install apache2 apache2-utils autoconf build-essential ca-certificates comerr-dev curl cfv quota mktorrent dtach htop irssi libapache2-mod-php5 libcloog-ppl-dev libcppunit-dev libcurl3 libcurl4-openssl-dev libncurses5-dev libterm-readline-gnu-perl libsigc++-2.0-dev libperl-dev openvpn libssl-dev libtool libxml2-dev ncurses-base ncurses-term ntp openssl patch libc-ares-dev pkg-config php5 php5-cli php5-dev php5-curl php5-geoip php5-mcrypt php5-gd php5-xmlrpc pkg-config python-scgi screen ssl-cert subversion texinfo unzip zlib1g-dev expect joe automake1.9 flex bison debhelper binutils-gold ffmpeg libarchive-zip-perl libnet-ssleay-perl libhtml-parser-perl libxml-libxml-perl libjson-perl libjson-xs-perl libxml-libxslt-perl libxml-libxml-perl libjson-rpc-perl libarchive-zip-perl znc tcpdump
+apt-get --yes install apache2 apache2-utils autoconf build-essential ca-certificates comerr-dev curl cfv quota mktorrent dtach htop irssi libapache2-mod-php5 libcloog-ppl-dev libcppunit-dev libcurl3 libcurl4-openssl-dev libncurses5-dev libterm-readline-gnu-perl libsigc++-2.0-dev libperl-dev openvpn libssl-dev libtool libxml2-dev ncurses-base ncurses-term ntp openssl patch libc-ares-dev pkg-config php5 php5-cli php5-dev php5-curl php5-geoip php5-mcrypt php5-gd php5-xmlrpc pkg-config python-scgi screen ssl-cert subversion texinfo unzip zlib1g-dev expect joe automake1.9 flex bison debhelper binutils-gold libarchive-zip-perl libnet-ssleay-perl libhtml-parser-perl libxml-libxml-perl libjson-perl libjson-xs-perl libxml-libxslt-perl libxml-libxml-perl libjson-rpc-perl libarchive-zip-perl znc tcpdump
 if [ $? -gt 0 ]; then
   set +x verbose
   echo
@@ -354,6 +354,96 @@ if [ $? -gt 0 ]; then
   set -e
   exit 1
 fi
+
+#FFmpeg from source install 
+#dependencies :
+sudo apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev libtheora-dev libtool libvorbis-dev pkg-config texi2html zlib1g-dev
+#YASM
+mkdir ~/ffmpeg_sources
+cd ~/ffmpeg_sources
+wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
+tar xzvf yasm-1.3.0.tar.gz
+cd yasm-1.3.0
+./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin"
+make
+make install
+make distclean
+#libx264
+cd ~/ffmpeg_sources
+wget http://download.videolan.org/pub/x264/snapshots/last_x264.tar.bz2
+tar xjvf last_x264.tar.bz2
+cd x264-snapshot*
+PATH="$PATH:$HOME/bin" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --disable-opencl
+PATH="$PATH:$HOME/bin" make
+make install
+make distclean
+# libfdk-aac
+sudo apt-get install unzip
+cd ~/ffmpeg_sources
+wget -O fdk-aac.zip https://github.com/mstorsjo/fdk-aac/zipball/master
+unzip fdk-aac.zip
+cd mstorsjo-fdk-aac*
+autoreconf -fiv
+./configure --prefix="$HOME/ffmpeg_build" --disable-shared
+make
+make install
+make distclean
+#libmp3lame
+sudo apt-get install nasm
+cd ~/ffmpeg_sources
+wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
+tar xzvf lame-3.99.5.tar.gz
+cd lame-3.99.5
+./configure --prefix="$HOME/ffmpeg_build" --enable-nasm --disable-shared
+make
+make install
+make distclean
+#libopus
+cd ~/ffmpeg_sources
+wget http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz
+tar xzvf opus-1.1.tar.gz
+cd opus-1.1
+./configure --prefix="$HOME/ffmpeg_build" --disable-shared
+make
+make install
+make distclean
+#libvpx
+cd ~/ffmpeg_sources
+wget http://webm.googlecode.com/files/libvpx-v1.3.0.tar.bz2
+tar xjvf libvpx-v1.3.0.tar.bz2
+cd libvpx-v1.3.0
+./configure --prefix="$HOME/ffmpeg_build" --disable-examples
+make
+make install
+make clean
+#final install
+cd ~/ffmpeg_sources
+wget http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
+tar xjvf ffmpeg-snapshot.tar.bz2
+cd ffmpeg
+PATH="$PATH:$HOME/bin" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --extra-cflags="-I$HOME/ffmpeg_build/include" --extra-ldflags="-L$HOME/ffmpeg_build/lib" --bindir="$HOME/bin" --enable-gpl --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-nonfree
+PATH="$PATH:$HOME/bin" make
+make install && ldconfig
+make distclean
+hash -r
+if [ $? -gt 0 ]; then
+  set +x verbose
+  echo
+  echo
+  echo *** ERROR ***
+  echo
+  echo "Looks like somethig is wrong with FFMPEG install, aborting."
+  echo
+  echo
+  echo
+  set -e
+  exit 1
+fi
+
+
+
+
+
 apt-get --yes install zip
 apt-get --yes install python-software-properties
 
@@ -481,12 +571,7 @@ bash /etc/seedbox-from-scratch/createOpenSSLCACertificate
 mkdir -p /etc/ssl/private/
 openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -config /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf
 
-if [ "$OS1" = "Debian" ]; then
-  apt-get --yes --force-yes install vsftpd
-else
-  apt-get --yes install libcap-dev libpam0g-dev libwrap0-dev
-  dpkg -i /etc/seedbox-from-scratch/vsftpd_2.3.2-3ubuntu5.1_`uname -m`.deb
-fi
+apt-get --yes --force-yes install vsftpd
 
 perl -pi -e "s/anonymous_enable\=YES/\#anonymous_enable\=YES/g" /etc/vsftpd.conf
 perl -pi -e "s/connect_from_port_20\=YES/#connect_from_port_20\=YES/g" /etc/vsftpd.conf
