@@ -28,14 +28,14 @@ aptitude install -y lsb-release
   OS1=$(lsb_release -si)
 #
 # Changelog
-#	Version 2.2.0 (Stable)
-#		29/08/2014 05:18 GMT +1
+#	Version 2.2.0 (supposedly Stable)
+#		some date, late in the evening/really early in the morning
 #		- Deluge & Rtorrent updated and default are most recent (1.3.7 & 0.9.4)
 #		- Debian only script (lower resources footprint), removed ubuntu specific code (most of it... if useless and not bothering I might have forgotten some of it)
 #		- Xmlrpc and most of the software migrated to packet/svn rebuilt from source accessing methods.
 #		- Cherry Pick commit https://github.com/imakiro/seedbox-from-scratch/commit/5dc814df32b4b1314ca6151d46fcd57d76788640 thank you dannyti !
 #		- added jquery "browser" plug-in to avoid MSIE error with most recent jquery versions.
-#
+#		-
 #
 #  Version 2.1.9 (not stable yet)
 #   Dec 26 2012 17:37 GMT-3
@@ -290,7 +290,7 @@ apt-get --yes update
 apt-get --yes install whois sudo makepasswd git
 
 rm -f -r /etc/seedbox-from-scratch
-git clone -b v$SBFSCURRENTVERSION1 https://github.com/imakiro/seedbox-from-scratch.git /etc/seedbox-from-scratch
+git clone -b $SBFSCURRENTVERSION1 https://github.com/imakiro/seedbox-from-scratch.git /etc/seedbox-from-scratch
 mkdir -p cd /etc/seedbox-from-scratch/source
 mkdir -p cd /etc/seedbox-from-scratch/users
 
