@@ -24,7 +24,7 @@
 #
 #
 aptitude install -y lsb-release
-  SBFSCURRENTVERSION1=testing
+  SBFSCURRENTVERSION1='testing'
   OS1=$(lsb_release -si)
 #
 # Changelog
