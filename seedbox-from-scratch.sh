@@ -18,17 +18,17 @@
 #  --> Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 #
 ######################################################################
-#
-#  git clone -b master https://github.com/Notos/seedbox-from-scratch.git /etc/seedbox-from-scratch
-#  sudo git stash; sudo git pull
+#	testing version script location :
+#  wget -N https://raw.github.com/imakiro/seedbox-from-scratch/testing/seedbox-from-scratch.sh --no-check-certificate
+#  bash seedbox-from-scratch.sh
 #
 #
 aptitude install -y lsb-release
-  SBFSCURRENTVERSION1='v2.2.0'
+  SBFSCURRENTVERSION1='testing'
   OS1=$(lsb_release -si)
 #
 # Changelog
-#	Version 2.2.0 (supposedly Stable)
+#	Version 2.2.0 (supposedly Stable) (KUZKO)
 #		some date, late in the evening/really early in the morning
 #		- Deluge & Rtorrent updated and default are most recent (1.3.7 & 0.9.4)
 #		- Debian only script (lower resources footprint), removed ubuntu specific code (most of it... if useless and not bothering I might have forgotten some of it)
@@ -287,7 +287,7 @@ if [ "$INSTALLBTSYNC" = "YES" ]; then
 fi
 
 apt-get --yes update
-apt-get --yes install whois sudo makepasswd git iptables portsentry
+apt-get --yes install whois sudo makepasswd git
 
 rm -f -r /etc/seedbox-from-scratch
 git clone -b $SBFSCURRENTVERSION1 https://github.com/imakiro/seedbox-from-scratch.git /etc/seedbox-from-scratch
@@ -581,8 +581,8 @@ echo "allow_anon_ssl=YES" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "force_local_data_ssl=NO" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "force_local_logins_ssl=NO" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "ssl_tlsv1=YES" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "ssl_sslv2=NO" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "ssl_sslv3=NO" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "ssl_sslv2=YES" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "ssl_sslv3=YES" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "require_ssl_reuse=NO" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "ssl_ciphers=HIGH" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "rsa_cert_file=/etc/ssl/private/vsftpd.pem" | tee -a /etc/vsftpd.conf >> /dev/null
@@ -803,6 +803,8 @@ fi
 bash /etc/seedbox-from-scratch/createSeedboxUser $NEWUSER1 $PASSWORD1 YES YES YES
 
 # 98.
+apt-get -y install iptables portsentry
+
 
 set +x verbose
 
