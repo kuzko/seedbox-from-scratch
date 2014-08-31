@@ -3,7 +3,7 @@
 #
 # The Seedbox From Scratch Script
 #   By Notos ---> https://github.com/Notos/
-#	Modified By imakiro --->https://gitub.com/imakiro/
+#	Modified By imakiro ---> https://gitub.com/imakiro/
 #
 ######################################################################
 #
@@ -24,10 +24,18 @@
 #
 #
 aptitude install -y lsb-release
-  SBFSCURRENTVERSION1=2.1.9
+  SBFSCURRENTVERSION1=2.2.0
   OS1=$(lsb_release -si)
 #
 # Changelog
+#	Version 2.2.0 (Stable)
+#		29/08/2014 05:18 GMT +1
+#		- Deluge & Rtorrent updated and default are most recent (1.3.7 & 0.9.4)
+#		- Debian only script (lower resources footprint), removed ubuntu specific code (most of it... if useless and not bothering I might have forgotten some of it)
+#		- Xmlrpc and most of the software migrated to packet/svn rebuilt from source accessing methods.
+#		- Cherry Pick commit https://github.com/imakiro/seedbox-from-scratch/commit/5dc814df32b4b1314ca6151d46fcd57d76788640 thank you dannyti !
+#		- added jquery "browser" plug-in to avoid MSIE error with most recent jquery versions.
+#
 #
 #  Version 2.1.9 (not stable yet)
 #   Dec 26 2012 17:37 GMT-3
@@ -377,9 +385,9 @@ apt-get --yes install php5-xcache
 
 #Check if its Debian an do a sysvinit by upstart replacement:
 
-if [ "$OS1" = "Debian" ]; then
-  echo 'Oui, faites ce que je vous dis !' | apt-get -y --force-yes install upstart
-fi
+#if [ "$OS1" = "Debian" ]; then
+#  echo 'Oui, faites ce que je vous dis !' | apt-get -y --force-yes install upstart
+#fi
 
 # 8.3 Generate our lists of ports and RPC and create variables
 
@@ -534,10 +542,13 @@ bash /etc/seedbox-from-scratch/installRTorrent $RTORRENT1
 # 22.
 cd /var/www
 rm -f -r rutorrent
-svn checkout http://rutorrent.googlecode.com/svn/trunk/rutorrent
-svn checkout http://rutorrent.googlecode.com/svn/trunk/plugins
-rm -r -f rutorrent/plugins
-mv plugins rutorrent/
+#-------------------old google svn checkout code --------------------------------------------#
+#svn checkout http://rutorrent.googlecode.com/svn/trunk/rutorrent
+#svn checkout http://rutorrent.googlecode.com/svn/trunk/plugins
+#rm -r -f rutorrent/plugins
+#mv plugins rutorrent/
+#-------------------end old google svn checkout code ----------------------------------------#
+git clone https://github.com/Novik/ruTorrent.git rutorrent
 
 #setting up mktorrent as default torrent creator
 rm /var/www/rutorrent/plugins/create/conf.php
@@ -568,6 +579,7 @@ rm -r -f jquery-browser-plugin
 sed -i '31i\<script type=\"text/javascript\" src=\"./js/jquery.browser.js\"></script> ' /var/www/rutorrent/index.html
 
 cd /var/www/rutorrent/plugins
+rm -rf autodl-irssi
 git clone https://github.com/autodl-community/autodl-rutorrent.git
 mv autodl-rutorrent autodl-irssi
 cd autodl-irssi
@@ -641,7 +653,7 @@ perl -pi -e "s/\\\$this\-\>userdir \= addslash\(\\\$topDirectory\)\;/\\\$this\-\
 perl -pi -e "s/\\\$topDirectory/\\\$homeDirectory/g" /var/www/rutorrent/plugins/filemanager/settings.js.php
 
 #32.4
-unzip /etc/seedbox-from-scratch/rutorrent-oblivion.zip -d /var/www/rutorrent/plugins/
+#unzip /etc/seedbox-from-scratch/rutorrent-oblivion.zip -d /var/www/rutorrent/plugins/
 echo "" | tee -a /var/www/rutorrent/css/style.css > /dev/null
 echo "/* for Oblivion */" | tee -a /var/www/rutorrent/css/style.css > /dev/null
 echo ".meter-value-start-color { background-color: #E05400 }" | tee -a /var/www/rutorrent/css/style.css > /dev/null
