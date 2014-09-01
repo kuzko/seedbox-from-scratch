@@ -652,6 +652,19 @@ cp /etc/seedbox-from-scratch/users/$NEWUSER1.info $HOMEJAILED1/$NEWUSER1.info
 sudo chown $NEWUSER1: $HOMEJAILED1/$NEWUSER1.info
 sudo chmod 400 $HOMEJAILED1/$NEWUSER1.info
 
+cd $HOMEJAILED1/
+sudo wget https://raw.githubusercontent.com/imakiro/seedbox-from-scratch/v2.1.9/crontab-check.sh 
+sudo perl -pi -e "s/USERNAME/$NEWUSER1/g" $HOMEJAILED1/crontab-check.sh
+sudo chmod +x $HOMEJAILED1/crontab-check.sh
+bash $HOMEJAILED1/crontab-check.sh
+mkdir $HOMEJAILED1/bin
+cd $HOMEJAILED1/bin
+sudo wget https://raw.githubusercontent.com/imakiro/seedbox-from-scratch/v2.1.9/rtcheck
+sudo chmod +x rtcheck
+cd ..
+sudo chown $NEWUSER1: -R bin
+#### 1bde2fd... Updated for Crontab entries & rtcheck
+
 set +x verbose
 clear
 echo ""
