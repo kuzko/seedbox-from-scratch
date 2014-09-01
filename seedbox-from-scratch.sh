@@ -326,8 +326,8 @@ service ssh restart
 perl -pi -e "s/deb cdrom/#deb cdrom/g" /etc/apt/sources.list
 
 #add non-free sources to Debian Squeeze# those two spaces below are on purpose
-perl -pi -e "s/wheezy main/wheezy  main contrib non-free/g" /etc/apt/sources.list
-perl -pi -e "s/wheezy-updates main/wheezy-updates  main contrib non-free/g" /etc/apt/sources.list
+perl -pi -e "s/$(lsb_release -cs | sed -n '/lucid\|precise\|quantal\|raring\|saucy\|trusty\|squeeze\|wheezy\|jessie\|sid/p') main/$(lsb_release -cs | sed -n '/lucid\|precise\|quantal\|raring\|saucy\|trusty\|squeeze\|wheezy\|jessie\|sid/p')  main contrib non-free/g" /etc/apt/sources.list
+perl -pi -e "s/$(lsb_release -cs | sed -n '/lucid\|precise\|quantal\|raring\|saucy\|trusty\|squeeze\|wheezy\|jessie\|sid/p')-updates main/$(lsb_release -cs | sed -n '/lucid\|precise\|quantal\|raring\|saucy\|trusty\|squeeze\|wheezy\|jessie\|sid/p')-updates  main contrib non-free/g" /etc/apt/sources.list
 
 
 # 7.
@@ -356,74 +356,69 @@ if [ $? -gt 0 ]; then
 fi
 
 #FFmpeg from source install 
+echo "deb http://www.deb-multimedia.org $(lsb_release -cs | sed -n '/lucid\|precise\|quantal\|raring\|saucy\|trusty\|squeeze\|wheezy\|jessie\|sid/p') main non-free" >> /etc/apt/sources.list
+echo "deb-src http://www.deb-multimedia.org $(lsb_release -cs | sed -n '/lucid\|precise\|quantal\|raring\|saucy\|trusty\|squeeze\|wheezy\|jessie\|sid/p') main non-free" >> /etc/apt/sources.list
+apt-get update
+apt-get install --force-yes -y deb-multimedia-keyring
+apt-get update
+cd /usr/local/src/
+mkdir ffmpeg_sources
+cd ffmpeg_sources/
 #dependencies :
-sudo apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev libtheora-dev libtool libvorbis-dev pkg-config texi2html zlib1g-dev
+apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev libtheora-dev libtool libvorbis-dev pkg-config texi2html zlib1g-dev
 #YASM
-mkdir ~/ffmpeg_sources
-cd ~/ffmpeg_sources
 wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
 tar xzvf yasm-1.3.0.tar.gz
 cd yasm-1.3.0
-./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin"
+./configure --prefix="/usr/local/src/ffmpeg_build" --bindir="/usr/local/bin" --enable-python-bindings
 make
 make install
 make distclean
+cd .. && rm -rf yasm-1.3.0 yasm-1.3.0.tar.gz
 #libx264
-cd ~/ffmpeg_sources
-wget http://download.videolan.org/pub/x264/snapshots/last_x264.tar.bz2
-tar xjvf last_x264.tar.bz2
-cd x264-snapshot*
-PATH="$PATH:$HOME/bin" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --disable-opencl
-PATH="$PATH:$HOME/bin" make
+git clone --depth 1 git://git.videolan.org/x264.git
+cd x264
+./configure --enable-static --prefix="/usr/local/src/ffmpeg_build" --bindir="/usr/local/bin"
+make
 make install
 make distclean
+cd ..
 # libfdk-aac
-sudo apt-get install unzip
-cd ~/ffmpeg_sources
-wget -O fdk-aac.zip https://github.com/mstorsjo/fdk-aac/zipball/master
-unzip fdk-aac.zip
-cd mstorsjo-fdk-aac*
+git clone --depth 1 git://github.com/mstorsjo/fdk-aac.git
+cd fdk-aac
 autoreconf -fiv
-./configure --prefix="$HOME/ffmpeg_build" --disable-shared
+./configure --disable-shared --prefix="/usr/local/src/ffmpeg_build" --bindir="/usr/local/bin"
 make
 make install
 make distclean
+cd ..
 #libmp3lame
-sudo apt-get install nasm
-cd ~/ffmpeg_sources
-wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
-tar xzvf lame-3.99.5.tar.gz
-cd lame-3.99.5
-./configure --prefix="$HOME/ffmpeg_build" --enable-nasm --disable-shared
-make
-make install
-make distclean
+apt-get install libmp3lame-dev
 #libopus
-cd ~/ffmpeg_sources
 wget http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz
 tar xzvf opus-1.1.tar.gz
 cd opus-1.1
-./configure --prefix="$HOME/ffmpeg_build" --disable-shared
+./configure --disable-shared --prefix="/usr/local/src/ffmpeg_build" --bindir="/usr/local/bin"
 make
 make install
 make distclean
+cd ..
 #libvpx
-cd ~/ffmpeg_sources
 wget http://webm.googlecode.com/files/libvpx-v1.3.0.tar.bz2
 tar xjvf libvpx-v1.3.0.tar.bz2
 cd libvpx-v1.3.0
-./configure --prefix="$HOME/ffmpeg_build" --disable-examples
+./configure --disable-examples --prefix="/usr/local/src/ffmpeg_build" --bindir="/usr/local/bin"
 make
 make install
 make clean
+cd ..
 #final install
-cd ~/ffmpeg_sources
 wget http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
 tar xjvf ffmpeg-snapshot.tar.bz2
 cd ffmpeg
-PATH="$PATH:$HOME/bin" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --extra-cflags="-I$HOME/ffmpeg_build/include" --extra-ldflags="-L$HOME/ffmpeg_build/lib" --bindir="$HOME/bin" --enable-gpl --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-nonfree
-PATH="$PATH:$HOME/bin" make
-make install && ldconfig
+./configure --prefix="/usr/local/src/ffmpeg_build" --extra-cflags="-I/usr/local/src/ffmpeg_build/include" --extra-ldflags="-L/usr/local/src/ffmpeg_build/lib" --bindir="/usr/local/bin" --extra-libs="-ldl" --enable-gpl --enable-libass --enable-libfaac --enable-libfdk-aac --enable-libmp3lame --enable-libopus --enable-postproc --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-nonfree
+make
+make install
 make distclean
 hash -r
 if [ $? -gt 0 ]; then
@@ -439,7 +434,6 @@ if [ $? -gt 0 ]; then
   set -e
   exit 1
 fi
-
 
 
 
@@ -803,7 +797,7 @@ fi
 bash /etc/seedbox-from-scratch/createSeedboxUser $NEWUSER1 $PASSWORD1 YES YES YES
 
 # 98.
-apt-get -y install iptables portsentry
+apt-get -y install portsentry
 
 
 set +x verbose
