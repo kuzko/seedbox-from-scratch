@@ -19,7 +19,7 @@
 #
 ######################################################################
 #	testing version script location :
-#  wget -N https://raw.github.com/imakiro/seedbox-from-scratch/testing/seedbox-from-scratch.sh --no-check-certificate
+#  wget -N https://raw.github.com/imakiro/seedbox-from-scratch/newfinal/seedbox-from-scratch.sh --no-check-certificate
 #  bash seedbox-from-scratch.sh
 #
 #
@@ -35,7 +35,7 @@ aptitude install -y lsb-release
 #		- Xmlrpc and most of the software migrated to packet/svn rebuilt from source accessing methods.
 #		- Cherry Pick commit https://github.com/imakiro/seedbox-from-scratch/commit/5dc814df32b4b1314ca6151d46fcd57d76788640 thank you dannyti !
 #		- added jquery "browser" plug-in to avoid MSIE error with most recent jquery versions.
-#		-
+#		- 
 #
 #  Version 2.1.9 (not stable yet)
 #   Dec 26 2012 17:37 GMT-3
@@ -365,7 +365,7 @@ cd /usr/local/src/
 mkdir ffmpeg_sources
 cd ffmpeg_sources/
 #dependencies :
-apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev libtheora-dev libtool libvorbis-dev pkg-config texi2html zlib1g-dev
+apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev libtheora-dev libtool libvorbis-dev pkg-config texi2html zlib1g-dev python-dev cython
 #YASM
 wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
 tar xzvf yasm-1.3.0.tar.gz
@@ -393,7 +393,7 @@ make install
 make distclean
 cd ..
 #libmp3lame
-apt-get install libmp3lame-dev
+apt-get install --force-yes -y libmp3lame-dev
 #libopus
 wget http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz
 tar xzvf opus-1.1.tar.gz
