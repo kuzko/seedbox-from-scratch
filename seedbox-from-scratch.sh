@@ -266,7 +266,9 @@ getString NO  "Install SABnzbd? " INSTALLSABNZBD1 NO
 getString NO  "Install Bittorent Sync ? " INSTALLBTSYNC YES
 getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 YES
 getString NO  "Install Deluge? " INSTALLDELUGE1 NO
-getString NO  "Wich RTorrent version would you like to install, '0.9.3' or '0.9.4' " RTORRENT1 0.9.4
+# getString NO  "On Which port Apache http should run? (default is 80) :" APACHEPORT 80
+# getString NO  "On Which port Apache https should run? (default is 443) :" APACHEPORT 443
+getString NO  "Which RTorrent version would you like to install, '0.9.3' or '0.9.4' " RTORRENT1 0.9.4
 
 if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.4" ]; then
   echo "$RTORRENT1 typed is not 0.9.3 or 0.9.4 !"
@@ -287,8 +289,8 @@ if [ "$INSTALLBTSYNC" = "YES" ]; then
 fi
 
 apt-get --yes update
-apt-get --yes install whois sudo makepasswd git
-
+apt-get --yes install whois sudo makepasswd librtmp-dev 
+apt-get --yes install git
 rm -f -r /etc/seedbox-from-scratch
 git clone -b $SBFSCURRENTVERSION1 https://github.com/imakiro/seedbox-from-scratch.git /etc/seedbox-from-scratch
 mkdir -p cd /etc/seedbox-from-scratch/source
