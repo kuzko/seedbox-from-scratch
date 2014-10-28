@@ -34,10 +34,6 @@
 
 RTORRENT1=$1
 
-if [ "$RTORRENT1" = "0.9.2" ]; then
-  LIBTORRENT1=0.13.2
-fi
-
 if [ "$RTORRENT1" = "0.9.3" ]; then
   LIBTORRENT1=0.13.3
 fi
@@ -57,13 +53,13 @@ sudo kill -9 `sudo ps aux | grep rtorrent | grep -v grep | awk '{print $2}' | cu
 cd /etc/seedbox-from-scratch/source/libtorrent-$LIBTORRENT1
 sudo ./autogen.sh
 sudo ./configure --prefix=/usr
-sudo make -j2
+sudo make -j$(grep -c ^processor /proc/cpuinfo)
 sudo make install
 
 cd /etc/seedbox-from-scratch/source/rtorrent-$RTORRENT1
 sudo ./autogen.sh
 sudo ./configure --prefix=/usr --with-xmlrpc-c
-sudo make -j2
+sudo make -j$(grep -c ^processor /proc/cpuinfo)
 sudo make install
 sudo ldconfig
 
