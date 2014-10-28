@@ -473,7 +473,15 @@ bash /etc/seedbox-from-scratch/createOpenSSLCACertificate
 mkdir -p /etc/ssl/private/
 openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -config /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf
 
-apt-get --yes --force-yes install vsftpd
+#apt-get --yes --force-yes install vsftpd
+# from now on, vsftpd is build from source... i'm done with debian's 7 packages that are bazillions versions late and debians packet manager shenanigans!
+cd /tmp/
+wget https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz
+dtrx vsftpd-3.0.2.tar.gz
+cd vsftpd-3.0.2/
+echo "#define VSF_BUILD_SSL" >>builddefs.h
+make
+make install
 
 
 perl -pi -e "s/anonymous_enable\=YES/\#anonymous_enable\=YES/g" /etc/vsftpd.conf
@@ -495,6 +503,7 @@ echo "local_umask=022" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "chroot_local_user=YES" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "chroot_list_file=/etc/vsftpd.chroot_list" | tee -a /etc/vsftpd.conf >> /dev/null
 echo "passwd_chroot_enable=yes" | tee -a /etc/vsftpd.conf >> /dev/null #added to enable vsftpd to work without filezilla complaining
+echo "allow_writeable_chroot=YES" | tee -a /etc/vsftpd.conf >> /dev/null
 
 # 13.
 mv /etc/apache2/sites-available/default /etc/apache2/sites-available/default.ORI
