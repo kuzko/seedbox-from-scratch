@@ -378,18 +378,12 @@ fi
 apt-get --yes install dnsutils
 
 #ffmpeg from source install (with ALL freaking extensions/codecs, because *EXPLOSION !*
-#xavs dependency
-cd /tmp/
-svn co https://svn.code.sf.net/p/xavs/code/trunk xavs
-cd xavs
-./configure --enable-shared --disable-asm
-make && make install
 #ffmpeg install
 wget http://www.ffmpeg.org/releases/ffmpeg-$FFMPEGVERSION.tar.gz
 tar zxf ffmpeg-$FFMPEGVERSION.tar.gz && cd ffmpeg-$FFMPEGVERSION
 ./configure --enable-gpl --enable-nonfree --enable-postproc --enable-pthreads --enable-x11grab --enable-swscale --enable-version3 --enable-shared --disable-yasm --enable-filter=movie --enable-frei0r --enable-libdc1394 --enable-libfaac --enable-libmp3lame --enable-libx264 --enable-libxvid --enable-libfreetype --enable-libvorbis --enable-libgsm --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-librtmp \
 --enable-libschroedinger --enable-libspeex --enable-libtheora --enable-libvpx \
---enable-libvo-amrwbenc --enable-libvo-aacenc --enable-libaacplus --enable-libxavs \
+--enable-libvo-amrwbenc --enable-libvo-aacenc --enable-libaacplus \
 --enable-bzlib --enable-openssl --enable-gnutls --enable-openal --enable-libv4l2 \
 --enable-libpulse --enable-libmodplug --enable-libass --enable-libcdio --enable-vdpau --enable-libbluray
 make -j$(grep -c ^processor /proc/cpuinfo)
