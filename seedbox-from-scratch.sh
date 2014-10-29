@@ -411,7 +411,7 @@ apt-get --yes install php5-xcache
 #Check if its Debian an do a sysvinit by systemd replacement:
 
   dpkg --force-remove-essential -r  sysvinit
-  apt-get -y --forece-yes -t squeeze-backports install systemd
+  apt-get -y --force-yes -t squeeze-backports install systemd
 
 # 8.3 Generate our lists of ports and RPC and create variables
 
@@ -520,7 +520,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout /etc/ssl/private/vsf
 #dpkg -i vsftpd_3.0.2-17_amd64.deb
 
 #BACKPORTS TO THE RESCUE
-apt-get -y --forece-yes -t squeeze-backports install vsftpd
+apt-get -y --force-yes -t squeeze-backports install vsftpd
 
 perl -pi -e "s/anonymous_enable\=YES/\#anonymous_enable\=YES/g" /etc/vsftpd.conf
 perl -pi -e "s/connect_from_port_20\=YES/#connect_from_port_20\=YES/g" /etc/vsftpd.conf
