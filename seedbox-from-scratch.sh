@@ -283,6 +283,7 @@ fi
 echo "" >> /etc/apt/sources.list
 echo "deb http://deb-multimedia.org wheezy main non-free" >> /etc/apt/sources.list
 echo "deb-src http://deb-multimedia.org wheezy non-free" >> /etc/apt/sources.list
+apt-get --yes update
 apt-get -y --force-yes install deb-multimedia-keyring
 apt-get --yes update
 apt-get --yes install whois sudo makepasswd git
