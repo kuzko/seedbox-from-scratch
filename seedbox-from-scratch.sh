@@ -278,6 +278,11 @@ if [ "$INSTALLBTSYNC" = "YES" ]; then
 	apt-get -y install btsync
 fi
 
+#preparing script and needed dependencies
+echo "" >> /etc/apt/sources.list
+echo "deb http://deb-multimedia.org wheezy main non-free" >> /etc/apt/sources.list
+echo "deb-src http://deb-multimedia.org wheezy non-free" >> /etc/apt/sources.list
+apt-get -y --force-yes install deb-multimedia-keyring
 apt-get --yes update
 apt-get --yes install whois sudo makepasswd git
 
@@ -322,6 +327,10 @@ perl -pi -e "s/deb cdrom/#deb cdrom/g" /etc/apt/sources.list
 perl -pi -e "s/wheezy main/wheezy  main contrib non-free/g" /etc/apt/sources.list
 perl -pi -e "s/wheezy-updates main/wheezy-updates  main contrib non-free/g" /etc/apt/sources.list
 
+
+#ffmpeg from source dependencies
+apt-get --yes install subversion unzip frei0r-plugins-dev libdc1394-22-dev libfaac-dev libmp3lame-dev libx264-dev libdirac-dev libxvidcore-dev libfreetype6-dev libvorbis-dev libgsm1-dev libopencore-amrnb-dev libopencore-amrwb-dev libopenjpeg-dev librtmp-dev libschroedinger-dev libspeex-dev libtheora-dev libva-dev libvpx-dev libvo-amrwbenc-dev libvo-aacenc-dev libaacplus-dev libbz2-dev libgnutls-dev libssl-dev libopenal-dev libv4l-dev libpulse-dev libmodplug-dev libass-dev libcdio-dev libcdio-cdda-dev libcdio-paranoia-dev libvdpau-dev libxfixes-dev libxext-dev libbluray-dev
+
 # 7.
 # update and upgrade packages
 
@@ -361,13 +370,35 @@ fi
 
 apt-get --yes install dnsutils
 
+#ffmpeg from source install (with ALL freaking extensions/codecs, because *EXPLOSION !*
+#xavs dependency
+cd /tmp/
+svn co https://svn.code.sf.net/p/xavs/code/trunk xavs
+cd xavs
+./configure --enable-shared --disable-asm
+make && make install
+#ffmpeg install
+wget http://www.ffmpeg.org/releases/ffmpeg-$(FFMPEGVERSION).tar.gz
+tar zxf ffmpeg-$(FFMPEGVERSION).tar.gz && cd ffmpeg-$(FFMPEGVERSION)
+./configure --enable-gpl --enable-nonfree --enable-postproc --enable-pthreads --enable-x11grab --enable-swscale --enable-version3 --enable-shared --disable-yasm --enable-filter=movie --enable-frei0r --enable-libdc1394 --enable-libfaac --enable-libmp3lame --enable-libx264 --enable-libxvid --enable-libfreetype --enable-libvorbis --enable-libgsm --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-librtmp \
+--enable-libschroedinger --enable-libspeex --enable-libtheora --enable-libvpx \
+--enable-libvo-amrwbenc --enable-libvo-aacenc --enable-libaacplus --enable-libxavs \
+--enable-bzlib --enable-openssl --enable-gnutls --enable-openal --enable-libv4l2 \
+--enable-libpulse --enable-libmodplug --enable-libass --enable-libcdio --enable-vdpau --enable-libbluray
+make -j$(grep -c ^processor /proc/cpuinfo)
+make install && ldconfig
+#end of ffmpeg install
+
+
+
+
 if [ "$CHROOTJAIL1" = "YES" ]; then
   cd /etc/seedbox-from-scratch
-  tar xvfz jailkit-2.15.tar.gz -C /etc/seedbox-from-scratch/source/
-  cd source/jailkit-2.15
+  tar xvfz jailkit-2.17.tar.gz -C /etc/seedbox-from-scratch/source/
+  cd source/jailkit-2.17
   ./debian/rules binary
   cd ..
-  dpkg -i jailkit_2.15-1_*.deb
+  dpkg -i jailkit_2.17-1_*.deb
 fi
 
 # 8.1 additional packages for Ubuntu
@@ -378,7 +409,8 @@ apt-get --yes install php5-xcache
 #Check if its Debian an do a sysvinit by upstart replacement:
 
 if [ "$OS1" = "Debian" ]; then
-  echo 'Oui, faites ce que je vous dis !' | apt-get -y --force-yes install upstart
+  dpkg --force-remove-essential remove sysvinit
+  apt-get -y --force-yes install upstart
 fi
 
 # 8.3 Generate our lists of ports and RPC and create variables
@@ -529,7 +561,7 @@ svn checkout http://svn.code.sf.net/p/xmlrpc-c/code/stable
 # 16.
 cd stable
 ./configure --prefix=/usr --enable-libxml2-backend --disable-libwww-client --disable-wininet-client --disable-abyss-server --disable-cgi-server
-make
+make -j$(grep -c ^processor /proc/cpuinfo)
 make install
 
 # 21.

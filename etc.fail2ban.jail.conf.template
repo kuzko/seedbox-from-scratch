@@ -202,7 +202,7 @@ maxretry = 2
 
 [vsftpd]
 
-enabled  = false
+enabled  = true
 port     = ftp,ftp-data,ftps,ftps-data
 filter   = vsftpd
 logpath  = /var/log/vsftpd.log
