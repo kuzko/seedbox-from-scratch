@@ -328,7 +328,7 @@ perl -pi -e "s/deb cdrom/#deb cdrom/g" /etc/apt/sources.list
 #add non-free sources to Debian Squeeze# those two spaces below are on purpose
 perl -pi -e "s/wheezy main/wheezy  main contrib non-free/g" /etc/apt/sources.list
 perl -pi -e "s/wheezy-updates main/wheezy-updates  main contrib non-free/g" /etc/apt/sources.list
-
+perl -pi -e "s/deb http://http.debian.net/debian wheezy-backports main/g" /etc/apt/sources.list
 
 #ffmpeg from source dependencies
 apt-get --yes install subversion unzip frei0r-plugins-dev libdc1394-22-dev libfaac-dev libmp3lame-dev libx264-dev libdirac-dev libxvidcore-dev libfreetype6-dev libvorbis-dev libgsm1-dev libopencore-amrnb-dev libopencore-amrwb-dev libopenjpeg-dev librtmp-dev libschroedinger-dev libspeex-dev libtheora-dev libva-dev libvpx-dev libvo-amrwbenc-dev libvo-aacenc-dev libaacplus-dev libbz2-dev libgnutls-dev libssl-dev libopenal-dev libv4l-dev libpulse-dev libmodplug-dev libass-dev libcdio-dev libcdio-cdda-dev libcdio-paranoia-dev libvdpau-dev libxfixes-dev libxext-dev libbluray-dev
@@ -411,7 +411,7 @@ apt-get --yes install php5-xcache
 #Check if its Debian an do a sysvinit by systemd replacement:
 
   dpkg --force-remove-essential -r  sysvinit
-  apt-get -y --force-yes install systemd
+  apt-get -y --forece-yes -t squeeze-backports install systemd
 
 # 8.3 Generate our lists of ports and RPC and create variables
 
@@ -507,14 +507,20 @@ openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout /etc/ssl/private/vsf
 
 #apt-get --yes --force-yes install vsftpd
 # from now on, vsftpd is build from source... i'm done with debian's 7 packages that are bazillions versions late and debians packet manager shenanigans!
-cd /tmp/
-wget https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz
-tar xzvf vsftpd-3.0.2.tar.gz
-cd vsftpd-3.0.2/
-echo "#define VSF_BUILD_SSL" >>builddefs.h
-make
-make install
+#cd /tmp/
+#wget https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz
+#tar xzvf vsftpd-3.0.2.tar.gz
+#cd vsftpd-3.0.2/
+#echo "#define VSF_BUILD_SSL" >>builddefs.h
+#make
+#make install
 
+#or maybe direct from debian?
+#wget http://ftp.debian.org/debian/pool/main/v/vsftpd/vsftpd_3.0.2-17_amd64.deb
+#dpkg -i vsftpd_3.0.2-17_amd64.deb
+
+#BACKPORTS TO THE RESCUE
+apt-get -y --forece-yes -t squeeze-backports install vsftpd
 
 perl -pi -e "s/anonymous_enable\=YES/\#anonymous_enable\=YES/g" /etc/vsftpd.conf
 perl -pi -e "s/connect_from_port_20\=YES/#connect_from_port_20\=YES/g" /etc/vsftpd.conf
