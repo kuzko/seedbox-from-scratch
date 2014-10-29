@@ -408,12 +408,10 @@ fi
 apt-get --yes install php5-fpm
 apt-get --yes install php5-xcache
 
-#Check if its Debian an do a sysvinit by upstart replacement:
+#Check if its Debian an do a sysvinit by systemd replacement:
 
-if [ "$OS1" = "Debian" ]; then
   dpkg --force-remove-essential -r  sysvinit
-  apt-get -y --force-yes install upstart
-fi
+  apt-get -y --force-yes install systemd
 
 # 8.3 Generate our lists of ports and RPC and create variables
 
