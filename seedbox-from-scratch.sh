@@ -411,7 +411,7 @@ apt-get --yes install php5-xcache
 #Check if its Debian an do a sysvinit by systemd replacement:
 
   dpkg --force-remove-essential -r  sysvinit
-  apt-get -y --force-yes -t squeeze-backports install systemd systemd-sysv
+  apt-get -y --force-yes -t wheezy-backports install systemd systemd-sysv
 
 #apt-get --yes --force-yes install vsftpd
 # from now on, vsftpd is build from source... i'm done with debian's 7 packages that are bazillions versions late and debians packet manager shenanigans!
