@@ -413,6 +413,45 @@ apt-get --yes install php5-xcache
   dpkg --force-remove-essential -r  sysvinit
   apt-get -y --force-yes -t squeeze-backports install systemd
 
+#apt-get --yes --force-yes install vsftpd
+# from now on, vsftpd is build from source... i'm done with debian's 7 packages that are bazillions versions late and debians packet manager shenanigans!
+#cd /tmp/
+#wget https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz
+#tar xzvf vsftpd-3.0.2.tar.gz
+#cd vsftpd-3.0.2/
+#echo "#define VSF_BUILD_SSL" >>builddefs.h
+#make
+#make install
+
+#or maybe direct from debian?
+#wget http://ftp.debian.org/debian/pool/main/v/vsftpd/vsftpd_3.0.2-17_amd64.deb
+#dpkg -i vsftpd_3.0.2-17_amd64.deb
+
+#BACKPORTS TO THE RESCUE
+apt-get -y --force-yes -t wheezy-backports install vsftpd
+
+perl -pi -e "s/anonymous_enable\=YES/\#anonymous_enable\=YES/g" /etc/vsftpd.conf
+perl -pi -e "s/connect_from_port_20\=YES/#connect_from_port_20\=YES/g" /etc/vsftpd.conf
+echo "listen_port=$NEWFTPPORT1" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "ssl_enable=YES" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "allow_anon_ssl=YES" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "force_local_data_ssl=NO" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "force_local_logins_ssl=NO" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "ssl_tlsv1=YES" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "ssl_sslv2=NO" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "ssl_sslv3=NO" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "require_ssl_reuse=NO" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "ssl_ciphers=HIGH" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "rsa_cert_file=/etc/ssl/private/vsftpd.pem" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "local_enable=YES" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "write_enable=YES" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "local_umask=022" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "chroot_local_user=YES" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "chroot_list_file=/etc/vsftpd.chroot_list" | tee -a /etc/vsftpd.conf >> /dev/null
+echo "passwd_chroot_enable=yes" | tee -a /etc/vsftpd.conf >> /dev/null #added to enable vsftpd to work without filezilla complaining
+echo "allow_writeable_chroot=YES" | tee -a /etc/vsftpd.conf >> /dev/null  
+  
+  
 # 8.3 Generate our lists of ports and RPC and create variables
 
 #permanently adding scripts to PATH to all users and root
@@ -505,43 +544,7 @@ bash /etc/seedbox-from-scratch/createOpenSSLCACertificate
 mkdir -p /etc/ssl/private/
 openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -config /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf
 
-#apt-get --yes --force-yes install vsftpd
-# from now on, vsftpd is build from source... i'm done with debian's 7 packages that are bazillions versions late and debians packet manager shenanigans!
-#cd /tmp/
-#wget https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz
-#tar xzvf vsftpd-3.0.2.tar.gz
-#cd vsftpd-3.0.2/
-#echo "#define VSF_BUILD_SSL" >>builddefs.h
-#make
-#make install
 
-#or maybe direct from debian?
-#wget http://ftp.debian.org/debian/pool/main/v/vsftpd/vsftpd_3.0.2-17_amd64.deb
-#dpkg -i vsftpd_3.0.2-17_amd64.deb
-
-#BACKPORTS TO THE RESCUE
-apt-get -y --force-yes -t wheezy-backports install vsftpd
-
-perl -pi -e "s/anonymous_enable\=YES/\#anonymous_enable\=YES/g" /etc/vsftpd.conf
-perl -pi -e "s/connect_from_port_20\=YES/#connect_from_port_20\=YES/g" /etc/vsftpd.conf
-echo "listen_port=$NEWFTPPORT1" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "ssl_enable=YES" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "allow_anon_ssl=YES" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "force_local_data_ssl=NO" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "force_local_logins_ssl=NO" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "ssl_tlsv1=YES" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "ssl_sslv2=NO" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "ssl_sslv3=NO" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "require_ssl_reuse=NO" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "ssl_ciphers=HIGH" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "rsa_cert_file=/etc/ssl/private/vsftpd.pem" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "local_enable=YES" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "write_enable=YES" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "local_umask=022" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "chroot_local_user=YES" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "chroot_list_file=/etc/vsftpd.chroot_list" | tee -a /etc/vsftpd.conf >> /dev/null
-echo "passwd_chroot_enable=yes" | tee -a /etc/vsftpd.conf >> /dev/null #added to enable vsftpd to work without filezilla complaining
-echo "allow_writeable_chroot=YES" | tee -a /etc/vsftpd.conf >> /dev/null
 
 # 13.
 mv /etc/apache2/sites-available/default /etc/apache2/sites-available/default.ORI
