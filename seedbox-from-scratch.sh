@@ -432,7 +432,7 @@ apt-get --yes install php5-xcache
 
 echo "deb http://ftp.cyconet.org/debian wheezy-updates main non-free contrib" >> /etc/apt/sources.list.d/wheezy-updates.cyconet.list
 aptitude update
-aptitude install -y -o Aptitude::Cmdline::ignore-trust-violations=true wheezy-updates debian-cyconet-archive-keyring vsftpd
+aptitude install -y -o Aptitude::Cmdline::ignore-trust-violations=true -t wheezy-updates debian-cyconet-archive-keyring vsftpd
 
 perl -pi -e "s/anonymous_enable\=YES/\#anonymous_enable\=YES/g" /etc/vsftpd.conf
 perl -pi -e "s/connect_from_port_20\=YES/#connect_from_port_20\=YES/g" /etc/vsftpd.conf
