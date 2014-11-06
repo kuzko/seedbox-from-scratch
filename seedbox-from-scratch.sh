@@ -327,8 +327,8 @@ service ssh restart
 perl -pi -e "s/deb cdrom/#deb cdrom/g" /etc/apt/sources.list
 
 #add non-free sources to Debian Squeeze# those two spaces below are on purpose
-perl -pi -e "s/wheezy main/wheezy  main contrib non-free/g" /etc/apt/sources.list
-perl -pi -e "s/wheezy-updates main/wheezy-updates  main contrib non-free/g" /etc/apt/sources.list
+#perl -pi -e "s/wheezy main/wheezy  main contrib non-free/g" /etc/apt/sources.list
+#perl -pi -e "s/wheezy-updates main/wheezy-updates  main contrib non-free/g" /etc/apt/sources.list
 
 #ffmpeg from source dependencies
 apt-get --yes install subversion unzip frei0r-plugins-dev libdc1394-22-dev libfaac-dev libmp3lame-dev libx264-dev libdirac-dev libxvidcore-dev libfreetype6-dev libvorbis-dev libgsm1-dev libopencore-amrnb-dev libopencore-amrwb-dev libopenjpeg-dev librtmp-dev libschroedinger-dev libspeex-dev libtheora-dev libva-dev libvpx-dev libvo-amrwbenc-dev libvo-aacenc-dev libaacplus-dev libbz2-dev libgnutls-dev libssl-dev libopenal-dev libv4l-dev libpulse-dev libmodplug-dev libass-dev libcdio-dev libcdio-cdda-dev libcdio-paranoia-dev libvdpau-dev libxfixes-dev libxext-dev libbluray-dev
