@@ -23,7 +23,9 @@
 #  sudo git stash; sudo git pull
 #
 #
+apt-get --yes install aptitude
 aptitude install -y lsb-release
+locale-gen
   SBFSCURRENTVERSION1=2.1.9
   FFMPEGVERSION=2.4.2
   OS1=$(lsb_release -si)
