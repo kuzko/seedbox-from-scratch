@@ -235,6 +235,7 @@ export DEBIAN_FRONTEND=noninteractive
 clear
 
 # 1.
+sudo apt-get update
 apt-get --yes install aptitude
 aptitude install -y lsb-release
 locale-gen
