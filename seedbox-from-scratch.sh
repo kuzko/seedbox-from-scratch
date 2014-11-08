@@ -612,6 +612,7 @@ tar jxvf MediaInfo_CLI_0.7.69_GNU_FromSource.tar.bz2
 cd MediaInfo_CLI_GNU_FromSource/
 sh CLI_Compile.sh
 cd MediaInfo/Project/GNU/CLI
+make -j$(grep -c ^processor /proc/cpuinfo)
 make install
 
 cd /var/www/rutorrent/js/
