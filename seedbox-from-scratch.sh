@@ -24,7 +24,7 @@
 #
 #
   SBFSCURRENTVERSION1=2.1.9
-  FFMPEGVERSION=2.4.2
+  FFMPEGVERSION=2.4.3
   OS1=$(lsb_release -si)
 #
 # Changelog
@@ -236,7 +236,7 @@ clear
 
 # 1.
 apt-get update
-apt-get --yes install aptitude
+apt-get --yes install aptitude sudo
 aptitude install -y lsb-release
 locale-gen
 #localhost is ok this rtorrent/rutorrent installation
@@ -289,7 +289,7 @@ echo "deb http://http.debian.net/debian wheezy-backports main" >> /etc/apt/sourc
 apt-get --yes update
 apt-get -y --force-yes install deb-multimedia-keyring
 apt-get --yes update
-apt-get --yes install whois sudo makepasswd git
+apt-get --yes install whois makepasswd git
 
 rm -f -r /etc/seedbox-from-scratch
 git clone -b v$SBFSCURRENTVERSION1 https://github.com/imakiro/seedbox-from-scratch.git /etc/seedbox-from-scratch
@@ -417,21 +417,6 @@ apt-get --yes install php5-xcache
   apt-get -y --force-yes -t wheezy-backports install systemd systemd-sysv
 
 #apt-get --yes --force-yes install vsftpd
-# from now on, vsftpd is build from source... i'm done with debian's 7 packages that are bazillions versions late and debians packet manager shenanigans!
-#cd /tmp/
-#wget https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz
-#tar xzvf vsftpd-3.0.2.tar.gz
-#cd vsftpd-3.0.2/
-#echo "#define VSF_BUILD_SSL" >>builddefs.h
-#make
-#make install
-
-#or maybe direct from debian?
-#wget http://ftp.debian.org/debian/pool/main/v/vsftpd/vsftpd_3.0.2-17_amd64.deb
-#dpkg -i vsftpd_3.0.2-17_amd64.deb
-
-#BACKPORTS TO THE RESCUE (nope didn't work)
-#apt-get -y --force-yes -t wheezy-backports install 
 
 echo "deb http://ftp.cyconet.org/debian wheezy-updates main non-free contrib" >> /etc/apt/sources.list.d/wheezy-updates.cyconet.list
 aptitude update
@@ -587,10 +572,11 @@ bash /etc/seedbox-from-scratch/installRTorrent $RTORRENT1
 # 22.
 cd /var/www
 rm -f -r rutorrent
-svn checkout http://rutorrent.googlecode.com/svn/trunk/rutorrent
-svn checkout http://rutorrent.googlecode.com/svn/trunk/plugins
-rm -r -f rutorrent/plugins
-mv plugins rutorrent/
+#svn checkout http://rutorrent.googlecode.com/svn/trunk/rutorrent
+#svn checkout http://rutorrent.googlecode.com/svn/trunk/plugins
+#rm -r -f rutorrent/plugins
+#mv plugins rutorrent/
+git clone https://github.com/Novik/ruTorrent.git rutorrent
 
 #setting up mktorrent as default torrent creator
 rm /var/www/rutorrent/plugins/create/conf.php
