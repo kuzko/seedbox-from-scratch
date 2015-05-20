@@ -43,7 +43,7 @@ done
 # 3.1.1
 
 #kill all processes related to that user
-sudo kill -9 $( ps -ef | grep $NEWUSER1 | awk '{ print $2 }' )
+sudo kill -9 $( sudo ps -ef | grep $NEWUSER1 | awk '{ print $2 }' )
 
 # 3.2
 
